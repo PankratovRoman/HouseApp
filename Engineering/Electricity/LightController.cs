@@ -6,24 +6,16 @@ namespace HouseApp.Engineering.Electricity
 {
     class LightController : ElecricityDinModule
     {
-        int cellsCount = 5;
-        int inputCount = 4;
-        int outputCount = 4;
+        readonly int inputCount = 4;
+        readonly int outputCount = 4;
         int extensionCount;
-        
-        public bool HaveExtension { get; set; }
+
+        public bool HaveExtension { get; protected set; }
         public int ExtensionCount
         {
             get
             {
-                if (HaveExtension)
-                {
-                    return extensionCount;
-                }
-                else
-                {
-                    throw new Exception("There is no extensions");
-                }
+                return extensionCount;
             }
             protected set
             {
@@ -34,62 +26,41 @@ namespace HouseApp.Engineering.Electricity
         {
             get
             {
-                if (HaveExtension)
-                {
-                    return inputCount += (extensionCount * inputCount);
-                }
-                else
-                {
-                    return inputCount;
-                }
+                return inputCount; 
             }
         }
         public int OutputCount
         {
             get
             {
-                if (HaveExtension)
-                {
-                    return outputCount += (extensionCount * outputCount);
-                }
-                else
-                {
-                    return outputCount;
-                }
+                return outputCount;
             }
         }
 
-        public override int CellsCount
-        {
-            get
-            {
-                if (HaveExtension)
-                {
-                    return cellsCount += (extensionCount * 3);
-                }
-                else
-                {
-                    return cellsCount;
-                }
-            }
-        }
-
-        public LightController(string brand, bool haveExt, int extCount) : base (brand, 5)
+        public LightController(string brand, bool haveExt, int extCount) : base(brand, 5)
         {
             IsOn = false;
             HaveExtension = haveExt;
             if (extCount > 2 || extCount < 0)
             {
-                throw new Exception("Minimum/Maximum extensions = 0/2");
+                throw new ArgumentException("Minimum/Maximum extensions = 0/2");
             }
             else
             {
                 ExtensionCount = extCount;
             }
 
+            if (HaveExtension)
+            {
+                CellsCount += (extensionCount * 2);
+                inputCount += (extensionCount * inputCount);
+                outputCount += (extensionCount * outputCount);
+            }
+
+
         }
 
-  
+
 
 
     }

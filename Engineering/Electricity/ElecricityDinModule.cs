@@ -8,18 +8,37 @@ namespace HouseApp.Engineering.Electricity
     {
         public string Brand { get; set; }
 
-        int cellsCount = 1;
+        protected int cellsCount;
         public bool IsOn { get; set; }
-        virtual public int CellsCount { get { return cellsCount; } }
+        public int CellsCount { get { return cellsCount; } protected set { cellsCount = value; } }
 
-        public ElecricityDinModule(string brand, int cellsCount)
+        protected ElecricityDinModule(string brand, int cellsCount)
         {
             Brand = brand;
-            this.cellsCount = cellsCount;
+            CellsCount = cellsCount;
         }
-        public void TurnOn() 
+        public void TurnOn()
         {
             IsOn = !IsOn;
+        }
+
+        public static void InstallOnShield(ElectricityPanel shield, ElecricityDinModule dinModule, int rowOnShiled, int cellOnRow)
+        {
+            if (shield.Modules.GetUpperBound(1) < cellOnRow + dinModule.cellsCount)
+            {
+                throw new InvalidOperationException($"Not enough slots for {dinModule.Brand}.");
+            }
+            for (var i = cellOnRow; i < cellOnRow + dinModule.cellsCount; i++) //0 11
+            {
+                if (shield.Modules[rowOnShiled, i] != null)
+                {
+                    throw new InvalidOperationException($"There are no empty slots for {dinModule.Brand}.");
+                }
+            }
+            for (var i = cellOnRow; i < cellOnRow + dinModule.cellsCount; i++)
+            {
+                shield.Modules[rowOnShiled, i] = dinModule;
+            }
         }
     }
 }

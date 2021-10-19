@@ -14,5 +14,11 @@ namespace HouseApp
             Rooms = rooms;
         }
 
+        public void BreatheLifeIntoTheHouse()
+        {
+            Console.WriteLine($"Welcome to The House! Type bla-bla-bla.... to breathe life into the house {Name}");
+            Console.WriteLine();
+        }
+
     }
 }

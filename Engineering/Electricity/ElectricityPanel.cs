@@ -8,13 +8,14 @@ namespace HouseApp.Engineering.Electricity
     {
         public int RowCount { get; set; }
         public int CellsInRow { get; set; }
-        public ElecricityDinModule[,] Moduls { get { return new ElecricityDinModule[RowCount, CellsInRow]; } }
+        public ElecricityDinModule[,] Modules { get; }
         public Room InstallationPlace { get; }
         public ElectricityPanel(int rowCount, int cellsInRow, Room installPlace)
         {
             RowCount = rowCount;
             CellsInRow = cellsInRow;
             InstallationPlace = installPlace;
+            Modules = new ElecricityDinModule[RowCount, CellsInRow];
         }
     }
 }
